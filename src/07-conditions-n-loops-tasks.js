@@ -408,8 +408,24 @@ function toNaryString(num, n) {
  *   ['/web/assets/style.css', '/.bin/mocha',  '/read.me'] => '/'
  *   ['/web/favicon.ico', '/web-scripts/dump', '/verbalizer/logs'] => '/'
  */
-function getCommonDirectoryPath(/* pathes */) {
-  throw new Error('Not implemented');
+function getCommonDirectoryPath(pathes) {
+  const firstPath = pathes[0];
+  const pathesWithoutFirst = pathes.splice(1);
+  let commonPath = '';
+  function check(checkPath) {
+    const regexp = new RegExp(`^${checkPath}`);
+    return pathesWithoutFirst.every((path) => path.match(regexp));
+  }
+  for (let i = 0; i < firstPath.length - 1; i += 1) {
+    if (check(commonPath + firstPath[i])) {
+      commonPath += firstPath[i];
+    } else {
+      break;
+    }
+  }
+  const indexLastSlash = commonPath.lastIndexOf('/');
+  if (indexLastSlash > -1) commonPath = commonPath.slice(0, indexLastSlash + 1);
+  return commonPath;
 }
 
 
@@ -466,8 +482,25 @@ function getMatrixProduct(/* m1, m2 */) {
  *    [    ,   ,    ]]
  *
  */
-function evaluateTicTacToePosition(/* position */) {
-  throw new Error('Not implemented');
+function evaluateTicTacToePosition(position) {
+  const columns = [[], [], []];
+  const diag = [];
+  const diag2 = [position[0][2], position[1][1], position[2][0]];
+  for (let i = 0; i < position.length; i += 1) {
+    for (let j = 0; j < position[i].length; j += 1) {
+      if (i === j) {
+        diag.push(position[i][j]);
+      }
+      columns[j].push(position[i][j]);
+    }
+  }
+  const rows = [...position, ...columns, diag, diag2].map((row) => row.join(''));
+  let result;
+  for (let i = 0; i < rows.length; i += 1) {
+    if (rows[i] === 'XXX') result = 'X';
+    if (rows[i] === '000') result = '0';
+  }
+  return result;
 }
 
 
