@@ -94,8 +94,8 @@ function getSumBetweenNumbers(n1, n2) {
  *   10,1,1   =>  false
  *   10,10,10 =>  true
  */
-function isTriangle(/* a, b, c */) {
-  throw new Error('Not implemented');
+function isTriangle(a, b, c) {
+  return (a + b > c && a + c > b && b + c > a);
 }
 
 
@@ -131,8 +131,29 @@ function isTriangle(/* a, b, c */) {
  *   { top:20, left:20, width: 20, height: 20 }    =>  false
  *
  */
-function doRectanglesOverlap(/* rect1, rect2 */) {
-  throw new Error('Not implemented');
+function doRectanglesOverlap(rect1, rect2) {
+  const top1 = rect1.top;
+  const left1 = rect1.left;
+  const right1 = rect1.width + rect1.left;
+  const bottom1 = rect1.height + rect1.top;
+  const top2 = rect2.top;
+  const left2 = rect2.left;
+  const right2 = rect2.width + rect2.left;
+  const bottom2 = rect2.height + rect2.top;
+  const angles1 = [[left1, top1], [right1, top1], [right1, bottom1], [left1, bottom1]];
+  const angles2 = [[left2, top2], [right2, top2], [right2, bottom2], [left2, bottom2]];
+  let result = false;
+  angles1.forEach((angle) => {
+    if ((angle[0] >= left2 && angle[0] <= right2) && (angle[1] >= top2 && angle[1] <= bottom2)) {
+      result = true;
+    }
+  });
+  angles2.forEach((angle) => {
+    if ((angle[0] >= left1 && angle[0] <= right1) && (angle[1] >= top1 && angle[1] <= bottom1)) {
+      result = true;
+    }
+  });
+  return result;
 }
 
 
@@ -162,8 +183,9 @@ function doRectanglesOverlap(/* rect1, rect2 */) {
  *   { center: { x:0, y:0 }, radius:10 },  { x:10, y:10 }   => false
  *
  */
-function isInsideCircle(/* circle, point */) {
-  throw new Error('Not implemented');
+function isInsideCircle(circle, point) {
+  const circleCenter = circle.center;
+  return (point.x - circleCenter.x) ** 2 + (point.y - circleCenter.y) ** 2 < circle.radius ** 2;
 }
 
 
@@ -289,8 +311,16 @@ function isCreditCardNumber(/* ccn */) {
  *   10000 ( 1+0+0+0+0 = 1 ) => 1
  *   165536 (1+6+5+5+3+6 = 26,  2+6 = 8) => 8
  */
-function getDigitalRoot(/* num */) {
-  throw new Error('Not implemented');
+function getDigitalRoot(num) {
+  let sum = 0;
+  const strNumber = String(num);
+  for (let i = 0; i < strNumber.length; i += 1) {
+    sum += Number(strNumber[i]);
+  }
+  if (sum > 9) {
+    return getDigitalRoot(sum);
+  }
+  return sum;
 }
 
 

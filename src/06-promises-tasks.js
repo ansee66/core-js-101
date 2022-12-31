@@ -98,23 +98,22 @@ function getFastestPromise(array) {
  *    });
  *
  */
-function chainPromises(/* array, action */) {
-  throw new Error('Not implemented');
-  // const results = [];
-  // let restPromises = array.length;
-  // return new Promise((resolve, reject) => {
-  //   array.forEach(async (promise, index) => {
-  //     Promise.resolve(promise)
-  //       .then((result) => {
-  //         results[index] = result;
-  //         restPromises -= 1;
-  //         if (restPromises === 0) resolve(results);
-  //       })
-  //       .catch((err) => { reject(err); });
-  //   });
-  // })
-  //   .then((resultArray) => resultArray.reduce(action))
-  //   .catch((err) => { throw Error(err); });
+function chainPromises(array, action) {
+  const results = [];
+  let restPromises = array.length;
+  return new Promise((resolve, reject) => {
+    array.forEach(async (promise, index) => {
+      Promise.resolve(promise)
+        .then((result) => {
+          results[index] = result;
+          restPromises -= 1;
+          if (restPromises === 0) resolve(results);
+        })
+        .catch((err) => { reject(err); });
+    });
+  })
+    .then((resultArray) => resultArray.reduce(action))
+    .catch((err) => { console.log(err); });
 }
 
 module.exports = {
