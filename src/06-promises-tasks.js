@@ -109,11 +109,11 @@ function chainPromises(array, action) {
           restPromises -= 1;
           if (restPromises === 0) resolve(results);
         })
-        .catch((err) => { reject(err); });
+        .catch((err) => reject(err));
     });
   })
     .then((resultArray) => resultArray.reduce(action))
-    .catch((err) => { console.log(err); });
+    .catch((err) => err);
 }
 
 module.exports = {

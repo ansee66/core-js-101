@@ -234,8 +234,12 @@ function findFirstSingleChar(str) {
  *   5, 3, true, true   => '[3, 5]'
  *
  */
-function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
-  throw new Error('Not implemented');
+function getIntervalString(a, b, isStartIncluded, isEndIncluded) {
+  let result = '';
+  result += isStartIncluded ? '[' : '(';
+  result += a < b ? `${a}, ${b}` : `${b}, ${a}`;
+  result += isEndIncluded ? ']' : ')';
+  return result;
 }
 
 
@@ -293,8 +297,25 @@ function reverseInteger(num) {
  *   5436468789016589 => false
  *   4916123456789012 => false
  */
-function isCreditCardNumber(/* ccn */) {
-  throw new Error('Not implemented');
+function isCreditCardNumber(ccn) {
+  const ccnStr = ccn.toString();
+  const checkDigit = Number(ccnStr[ccnStr.length - 1]);
+  const payload = ccnStr.slice(0, -1).split('').reverse().join('');
+  let doubledPayload = 0;
+  for (let i = 0; i < payload.length; i += 1) {
+    if (i % 2 === 0) {
+      let currentDigit = Number(payload[i]) * 2;
+      if (currentDigit > 9) {
+        currentDigit = String(currentDigit);
+        currentDigit = +currentDigit[0] + +currentDigit[1];
+      }
+      doubledPayload += currentDigit;
+    } else {
+      doubledPayload += Number(payload[i]);
+    }
+  }
+  const calcDigit = (1000 - doubledPayload) % 10;
+  return calcDigit === checkDigit;
 }
 
 /**
@@ -370,8 +391,8 @@ function isBracketsBalanced(/* str */) {
  *    365, 4  => '11231'
  *    365, 10 => '365'
  */
-function toNaryString(/* num, n */) {
-  throw new Error('Not implemented');
+function toNaryString(num, n) {
+  return num.toString(n);
 }
 
 
